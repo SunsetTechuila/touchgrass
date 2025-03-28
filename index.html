@@ -129,11 +129,13 @@
     };
 
     const getLocation = async () => {
-      return await new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const { latitude, longitude } = position.coords;
-          resolve({ latitude, longitude });
-        });
+      return await new Promise((resolve, reject) => {
+        const onSuccess = (position) => {
+        const { latitude, longitude } = position.coords;
+        resolve({ latitude, longitude });
+      };
+      const onError = (error) => reject(error);
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);
       });
     };
 
